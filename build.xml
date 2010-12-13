@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="build" name="dicebot">
+    <path id="classpath">
+        <fileset dir="${basedir}/lib/">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <target name="init-build">
+        <tstamp/>
+        <mkdir dir="build/"/>
+    </target>
+    <target name="make-build" depends="init-build">
+        <javac srcdir="${basedir}/src"
+               destdir="${basedir}/build"
+               target="1.5"
+               source="1.5">
+               <include name="**/*.java"/>
+               <classpath refid="classpath"/>
+        </javac>
+    </target>
+    <target name="build" depends="init-build,make-build">
+        <unjar dest="${basedir}/build/">
+            <fileset dir="${basedir}/lib/">
+                <include name="*.jar"/>
+            </fileset>
+            <patternset>
+                <include name="**/*.class"/>
+            </patternset>
+        </unjar>
+        <jar destfile="${basedir}/dicebot.jar" basedir="${basedir}/build">
+            <manifest>
+                <attribute name="Built-By" value="orion@perilouscodpiece.org"/>
+                <attribute name="Built-Date" value="${TODAY}"/>
+                <attribute name="Main-Class" value="org.perilouscodpiece.dicebot.Main"/>
+                <attribute name="Class-Path" value=". lib"/>
+            </manifest>
+        </jar>
+        <echo message="Build complete.  Please read README.txt for execution instructions."/>
+    </target>
+
+    <target name="clean">
+        <delete dir="${basedir}/build/"/>
+        <delete file="${basedir}/dicebot.jar"/>
+    </target>
+</project>
