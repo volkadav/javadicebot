@@ -37,8 +37,21 @@ to run:
         admin commands (in private message:)
             (for all, {password} is the admin password specified in
              the properties file as discussed above)
-
+            
+            !join channel password
+                tells dicebot to join the given channel
+            !leave channel password
+                tells dicebot to leave the given channel
             !quit password
                 tells dicebot to disconnect
             !op channel user password
                 directs dicebot to op user {user} in channel {channel}
+
+MISC NOTES:
+    1) dicebot does support multi-channel usage (either by following invites
+        or by admin commands), but by default the irc library uses one message
+        queue per server, and one second per message, so if many users are
+        sending many rolls (esp. verbose rolls) the single queue may take some
+        time to clear through hence users might experience some lag before getting
+        the results they had requested. Figuring out if there's some way to at least
+        have per-channel queuing is a matter for later research.
