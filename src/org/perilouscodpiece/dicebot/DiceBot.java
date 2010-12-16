@@ -7,6 +7,7 @@ import org.jibble.pircbot.*;
 public class DiceBot extends PircBot {
     private String adminPassword;
     private Random rand;
+    private int antifloodthreshold;
 
     public DiceBot(String nick, String adminpass) {
         this.setName(nick);
@@ -24,8 +25,25 @@ public class DiceBot extends PircBot {
         return false;
     }
 
+    public void setAntiFloodThreshold(String thresh) {
+        try {
+            this.antifloodthreshold = Integer.parseInt(thresh);
+        } catch (NumberFormatException nfe) {
+            // todo: log? alert somehow?
+        }
+    }
+
     public void onPrivateMessage(String sender, String login, String hostname, String message) {
         String[] atoms = message.split("\\s+");
+
+        if (message.startsWith("!antiflood")) {
+            if (atoms.length == 3) {
+                if (atoms[2].equals(this.adminPassword)) {
+                    setAntiFloodThreshold(atoms[1]);
+                    sendMessage(sender, "done");
+                }
+            }
+        }
 
         if (message.startsWith("!join")) {
             if (atoms.length == 3) {
@@ -123,6 +141,11 @@ public class DiceBot extends PircBot {
                     sendMessage(channel, sender + ": use positive integers for die size and count");
                 } else {
                     int total = 0;
+
+                    if (verbose && X > antifloodthreshold) {
+                        sendMessage(channel, sender + ": a verbose roll that large would exceed the current antiflood threshold of " + Integer.toString(antifloodthreshold) + ", so I'm falling back to non-verbose mode");
+                        verbose = false;
+                    }
 
                     for (int i = 0; i < X; i++) {
                         int roll = this.rand.nextInt(Y) + 1;

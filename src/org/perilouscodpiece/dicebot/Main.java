@@ -35,10 +35,12 @@ public class Main {
         }
 
         String nick = props.getProperty("nick", "dicebot");
+        String antifloodthreshold = props.getProperty("antifloodthreshold", "30");
 
         // instantiate dicebot
         DiceBot bot = new DiceBot(nick, adminPassword);
-        bot.setVerbose(true);
+        bot.setVerbose(false);
+        bot.setAntiFloodThreshold(antifloodthreshold);
 
         // connect
         try {
