@@ -14,13 +14,16 @@ to run:
         channel: somechannel
         nick: dicebot
         adminpassword: somepassword
+        antifloodthreshold: 30
 
         (note, '#' is a comment char, so omit it from 
          the channel name; dicebot will automatically
          prepend '#' to the given channel name)
 
         server, channel and adminpassword are required.  if nick is
-        omitted, "dicebot" will be used.
+        omitted, "dicebot" will be used. if antifloodthreshold is 
+        omitted, 20 will be used (this is the number such that dice
+        count over it will be prevented from using verbose rolling).
 
     2) java -jar dicebot.jar
 
@@ -37,7 +40,9 @@ to run:
         admin commands (in private message:)
             (for all, {password} is the admin password specified in
              the properties file as discussed above)
-            
+           
+            !antiflood {integer} password
+                tells dicebot to set the antiflood threshold to {int}
             !join channel password
                 tells dicebot to join the given channel
             !leave channel password
