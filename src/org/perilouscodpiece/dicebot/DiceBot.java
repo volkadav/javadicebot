@@ -174,7 +174,7 @@ public class DiceBot extends PircBot {
                 sendMessage(channel, sender + ": you need to supply one or more options to chose from (comma delimeted)");
             } else {
                 String[] options = message.replace("!choose\\s+","").split("\\s*,+\\s*");
-                int idx = this.rand.nextInt(options.length - 1) + 1;
+                int idx = this.rand.nextInt(options.length - 1);
                 sendMessage(channel, sender + ": " + options[idx]);
             }
         }
