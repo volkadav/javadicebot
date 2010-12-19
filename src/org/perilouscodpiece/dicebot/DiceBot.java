@@ -173,8 +173,8 @@ public class DiceBot extends PircBot {
             if (message.matches("!choose\\s*$")) {
                 sendMessage(channel, sender + ": you need to supply one or more options to chose from (comma delimeted)");
             } else {
-                String[] options = message.replace("!choose\\s+","").split("\\s*,+\\s*");
-                int idx = this.rand.nextInt(options.length - 1);
+                String[] options = message.replaceFirst("!choose\\s+","").split("\\s*,+\\s*");
+                int idx = this.rand.nextInt(options.length);
                 sendMessage(channel, sender + ": " + options[idx]);
             }
         }
