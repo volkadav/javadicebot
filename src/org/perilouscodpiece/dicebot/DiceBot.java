@@ -168,6 +168,16 @@ public class DiceBot extends PircBot {
                 }
             }
         }
+
+        if (message.startsWith("!choose")) {
+            if (message.matches("!choose\\s*$")) {
+                sendMessage(channel, sender + ": you need to supply one or more options to chose from (comma delimeted)");
+            } else {
+                String[] options = message.replace("!choose\\s+","").split("\\s*,+\\s*");
+                int idx = this.rand.nextInt(options.length - 1) + 1;
+                sendMessage(channel, sender + ": " + options[idx]);
+            }
+        }
         
         if (message.startsWith("!dicehelp")) {
             sendMessage(channel, sender + ": say !roll followed by a dice specifier in XdY[+-Z] format (+-Z, if given, applies to the total roll, not each die roll), or !vroll for verbose which shows each die rolled");
