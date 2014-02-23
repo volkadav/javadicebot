@@ -5,8 +5,8 @@ import java.util.regex.*;
 import org.jibble.pircbot.*;
 
 public class DiceBot extends PircBot {
-    private String adminPassword;
-    private Random rand;
+    private final String adminPassword;
+    private final Random rand;
     private int antifloodthreshold;
 
     public DiceBot(String nick, String adminpass) {
@@ -17,8 +17,8 @@ public class DiceBot extends PircBot {
 
     private boolean opsOnChannel(String channel) {
         User[] ulist = getUsers(channel);
-        for (int i = 0; i < ulist.length; i++) {
-            if (ulist[i].equals(getNick()) && ulist[i].isOp()) {
+        for (User u : ulist) {
+            if (u.equals(getNick()) && u.isOp()) {
                 return true;
             }
         }
@@ -33,6 +33,7 @@ public class DiceBot extends PircBot {
         }
     }
 
+    @Override
     public void onPrivateMessage(String sender, String login, String hostname, String message) {
         String[] atoms = message.split("\\s+");
 
@@ -87,12 +88,14 @@ public class DiceBot extends PircBot {
         }
     }
 
+    @Override
     public void onInvite(String targetNick, String sourceNick, String sourceLogin, String sourceHostname, String channel) {
         if (targetNick.equals(getNick())) { // not sure if this is required, reading the docs, but it can't hurt...
             joinChannel(channel);
         }
     }
 
+    @Override
     public void onMessage(String channel, String sender, String login, String hostname, String message) {
         if (message.startsWith("!roll") || message.startsWith("!vroll")) {
             String[] atoms = message.split("\\s+");
