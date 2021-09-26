@@ -13,8 +13,8 @@
     <target name="make-build" depends="init-build">
         <javac srcdir="${basedir}/src"
                destdir="${basedir}/build"
-               target="1.5"
-               source="1.5">
+               target="7"
+               source="7">
                <include name="**/*.java"/>
                <classpath refid="classpath"/>
         </javac>
